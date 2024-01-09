@@ -76,7 +76,7 @@ pub fn ChallengeRow(challenge: StoredValue<ChallengeResponse>, single: bool) -> 
         <tr class="dark:odd:bg-odd-dark dark:even:bg-even-dark odd:bg-odd-light even:bg-even-light text-center items-center">
             <td class=td_class>{icon}</td>
             <td class=td_class>
-                <p class="flex">
+                <p class="flex items-center">
                     <StatusIndicator username=challenge().challenger.username/>
                     <ProfileLink username=challenge().challenger.username/>
                 </p>
@@ -97,9 +97,9 @@ pub fn ChallengeRow(challenge: StoredValue<ChallengeResponse>, single: bool) -> 
                         TimeMode::RealTime => {
                             view! {
                                 <p>
-                                    "Realtime: " {challenge().time_base.expect("Time exists")/60} "m"
-                                    " + " {challenge().time_increment.expect("Increment exists")}
-                                    "s"
+                                    "Realtime: " {challenge().time_base.expect("Time exists") / 60}
+                                    "m" " + "
+                                    {challenge().time_increment.expect("Increment exists")} "s"
                                 </p>
                             }
                                 .into_view()
@@ -107,7 +107,11 @@ pub fn ChallengeRow(challenge: StoredValue<ChallengeResponse>, single: bool) -> 
                         TimeMode::Correspondence if challenge().time_base.is_some() => {
                             view! {
                                 <p>
-                                    {format!("Correspondence: {} days/side", challenge().time_base.expect("Time exists") / 86400)}
+                                    {format!(
+                                        "Correspondence: {} days/side",
+                                        challenge().time_base.expect("Time exists") / 86400,
+                                    )}
+
                                 </p>
                             }
                                 .into_view()
@@ -115,7 +119,11 @@ pub fn ChallengeRow(challenge: StoredValue<ChallengeResponse>, single: bool) -> 
                         TimeMode::Correspondence if challenge().time_increment.is_some() => {
                             view! {
                                 <p>
-                                    {format!("Correspondence: {} days/move ", challenge().time_increment.expect("Time exists") / 86400 )}
+                                    {format!(
+                                        "Correspondence: {} days/move ",
+                                        challenge().time_increment.expect("Time exists") / 86400,
+                                    )}
+
                                 </p>
                             }
                                 .into_view()
@@ -150,7 +158,7 @@ pub fn ChallengeRow(challenge: StoredValue<ChallengeResponse>, single: bool) -> 
                                         ApiRequests::new().challenge_cancel(challenge().nanoid)
                                     }
 
-                                    class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
+                                    class="bg-red-500 hover:bg-red-400 duration-300 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
                                 >
                                     Cancel
                                 </button>
@@ -160,7 +168,7 @@ pub fn ChallengeRow(challenge: StoredValue<ChallengeResponse>, single: bool) -> 
                                     <button
                                         ref=button_ref
                                         on:click=copy
-                                        class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
+                                        class="bg-blue-500 hover:bg-blue-400 duration-300 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
                                     >
                                         <Icon icon=Icon::from(AiCopyOutlined)/>
                                     </button>
@@ -189,7 +197,7 @@ pub fn ChallengeRow(challenge: StoredValue<ChallengeResponse>, single: bool) -> 
                             }
                         }
 
-                        class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
+                        class="bg-blue-500 hover:bg-blue-400 duration-300 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline m-1"
                     >
                         Join
                     </button>

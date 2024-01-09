@@ -53,14 +53,14 @@ pub fn Register(#[prop(optional)] extend_tw_classes: &'static str) -> impl IntoV
                 <input type="hidden" name="pathname" value=pathname().0/>
                 <input
                     type="submit"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none"
+                    class="bg-blue-500 hover:bg-blue-700 duration-300 text-white font-bold py-2 px-4 rounded focus:outline-none"
                     value="Sign Up"
                 />
 
             </ActionForm>
 
             <a
-                class="inline-block align-baseline font-bold text-blue-500 hover:text-blue-800"
+                class="inline-block align-baseline font-bold text-blue-500 hover:text-blue-800 duration-300"
                 href="/login"
             >
                 Already have an account?

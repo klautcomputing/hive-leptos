@@ -24,7 +24,7 @@ pub fn UserWithRating(
         )
     });
     view! {
-        <div class="flex">
+        <div class="flex items-center">
             <StatusIndicator username=player().username/>
             <ProfileLink username=player().username extend_tw_classes=text_color/>
         </div>
