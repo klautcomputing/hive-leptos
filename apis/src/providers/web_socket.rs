@@ -1,3 +1,4 @@
+use crate::providers::navigation_controller::NavigationControllerSignal;
 use crate::providers::online_users::OnlineUsersSignal;
 use crate::{
     common::{
@@ -23,6 +24,8 @@ use leptos_use::core::ConnectionReadyState;
 use leptos_use::*;
 use regex::Regex;
 use std::rc::Rc;
+
+use super::navigation_controller;
 lazy_static! {
     static ref NANOID: Regex =
         Regex::new(r"/game/(?<nanoid>.*)").expect("This regex should compile");
@@ -101,6 +104,7 @@ fn on_message_callback(m: String) {
         Ok(ServerResult::Ok(ServerMessage::GameUpdate(gar))) => {
             log!("Got a game action response message: {:?}", gar);
             let mut game_state = expect_context::<GameStateSignal>();
+            let mut navigation_controller = expect_context::<NavigationControllerSignal>();
             let auth_context = expect_context::<AuthContext>();
             let user_uuid = move || match untrack(auth_context.user) {
                 Some(Ok(Some(user))) => Some(user.id),
@@ -122,9 +126,9 @@ fn on_message_callback(m: String) {
                     timer.update_from(&gar.game);
                     game_state.clear_gc();
                     if Some(gar.user_id) == user_uuid() {
-                        let mut games = game_state.signal.get_untracked().next_games;
+                        let mut games = navigation_controller.signal.get_untracked().next_games;
                         games.retain(|g| *g != gar.game_id);
-                        game_state.set_next_games(games);
+                        navigation_controller.set_next_games(games);
                         log!("Skipping own turn");
                         return;
                     }
@@ -198,9 +202,8 @@ fn on_message_callback(m: String) {
             }
         }
         Ok(ServerResult::Ok(ServerMessage::GameActionNotification(games))) => {
-            let mut game_state = expect_context::<GameStateSignal>();
-            log!("New games: {:?}", games);
-            game_state.set_next_games(games);
+            let mut navigation_controller = expect_context::<NavigationControllerSignal>();
+            navigation_controller.set_next_games(games);
         }
         Ok(ServerResult::Ok(ServerMessage::Challenge(ChallengeUpdate::Challenges(
             new_challanges,
@@ -224,9 +227,10 @@ fn on_message_callback(m: String) {
                 let timer = expect_context::<TimerSignal>();
                 timer.update_from(&game);
                 if let GameStatus::Finished(_) = game.game_status {
-                    let mut games = game_state.signal.get_untracked().next_games;
+                    let mut navigation_controller = expect_context::<NavigationControllerSignal>();
+                    let mut games = navigation_controller.signal.get_untracked().next_games;
                     games.retain(|g| *g != game.nanoid);
-                    game_state.set_next_games(games);
+                    navigation_controller.set_next_games(games);
                 }
             }
         }
@@ -273,6 +277,7 @@ fn on_message_callback(m: String) {
 
 fn reset_game_state(game: &GameResponse) {
     let mut game_state = expect_context::<GameStateSignal>();
+    game_state.set_game_response(game.clone());
     let mut history = History::new();
     history.moves = game.history.to_owned();
     history.game_type = game.game_type.to_owned();

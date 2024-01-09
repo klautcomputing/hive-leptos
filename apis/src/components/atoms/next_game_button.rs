@@ -1,6 +1,8 @@
-use crate::providers::game_state::GameStateSignal;
+use crate::providers::{
+    game_state::GameStateSignal, navigation_controller::NavigationControllerSignal,
+};
 use lazy_static::lazy_static;
-use leptos::*;
+use leptos::{logging::log, *};
 use leptos_meta::Title;
 use leptos_router::RouterContext;
 use regex::Regex;
@@ -13,9 +15,10 @@ lazy_static! {
 pub fn NextGameButton() -> impl IntoView {
     let navigate = leptos_router::use_navigate();
     let game_state_signal = expect_context::<GameStateSignal>();
+    let navigation_controller = expect_context::<NavigationControllerSignal>();
 
     let next_games = move || {
-        let mut games = game_state_signal.signal.get().next_games;
+        let mut games = navigation_controller.signal.get().next_games;
         let router = expect_context::<RouterContext>();
         if let Some(caps) = NANOID.captures(&router.pathname().get_untracked()) {
             let nanoid = caps.name("nanoid").map_or("", |m| m.as_str());
