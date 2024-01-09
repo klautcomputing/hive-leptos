@@ -8,7 +8,9 @@ pub fn ProfileLink(
     let profile_link = format!("/@/{}", username);
     view! {
         <a
-            class=format!("z-20 relative font-bold hover:text-blue-600 {extend_tw_classes}")
+            class=format!(
+                "z-20 relative font-bold duration-300 hover:text-blue-600 {extend_tw_classes}",
+            )
             href=profile_link
         >
             {username}

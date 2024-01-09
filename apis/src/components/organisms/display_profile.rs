@@ -16,7 +16,7 @@ pub enum TabView {
 pub fn DisplayProfile(user: StoredValue<UserResponse>) -> impl IntoView {
     let games = Resource::once(move || get_user_games(user().username));
     let tab_view = create_rw_signal(TabView::Playing);
-    let button_styles = "z-10 w-fit flex justify-center box-content h-fit inline-block text-center hover:bg-green-300 rounded-md border-cyan-500 border-2 drop-shadow-lg";
+    let button_styles = "z-10 w-fit flex justify-center box-content h-fit inline-block text-center hover:bg-green-300 duration-300 rounded-md border-cyan-500 border-2 drop-shadow-lg";
     view! {
         <div class="grid grid-cols-6">
             <Transition>
@@ -69,7 +69,7 @@ pub fn DisplayProfile(user: StoredValue<UserResponse>) -> impl IntoView {
                                     {games().0.len()}
                                 </button>
                             </div>
-                            <p class="flex">
+                            <p class="flex items-center">
                                 <StatusIndicator username=user().username/>
                                 {user().username}
                             </p>

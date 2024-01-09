@@ -25,7 +25,7 @@ pub fn GameRow(game: StoredValue<GameResponse>) -> impl IntoView {
     let is_finished = move || matches!(game().game_status, GameStatus::Finished(_));
 
     view! {
-        <article class="flex items-stretch h-72 px-2 py-4 dark:odd:bg-odd-dark dark:even:bg-even-dark odd:bg-odd-light even:bg-even-light relative mx-2 w-3/4 hover:bg-blue-light hover:dark:bg-blue-dark">
+        <article class="flex items-stretch h-72 px-2 py-4 duration-300 dark:odd:bg-odd-dark dark:even:bg-even-dark odd:bg-odd-light even:bg-even-light relative mx-2 w-3/4 hover:bg-blue-light hover:dark:bg-blue-dark">
             <div class="h-60 w-60 mx-2">
                 <svg
                     viewBox="1100 500 600 400"
@@ -45,7 +45,7 @@ pub fn GameRow(game: StoredValue<GameResponse>) -> impl IntoView {
                 </div>
                 <div class="flex justify-center items-center w-full gap-1">
                     <div>
-                        <div class="flex">
+                        <div class="flex items-center">
                             <StatusIndicator username=game().white_player.username/>
                             <ProfileLink username=game().white_player.username/>
                         </div>
@@ -57,7 +57,7 @@ pub fn GameRow(game: StoredValue<GameResponse>) -> impl IntoView {
                     </div>
                     <Icon icon=Icon::from(RiSwordOthersLine) class=""/>
                     <div>
-                        <div class="flex">
+                        <div class="flex items-center">
                             <StatusIndicator username=game().black_player.username/>
                             <ProfileLink username=game().black_player.username/>
                         </div>
